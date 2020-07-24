@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    @products = Product.all
+    @products = Product.all.order(:title)
   end
 
   # GET /products/1
@@ -41,14 +41,20 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1.json
   def update
     respond_to do |format|
-      if @product.update(product_params)
-        format.html { redirect_to @product, notice: 'Product was successfully updated.' }
+      if @product.update(product_params) 
+        format.html { redirect_to @product,
+        notice: 'Product was successfully updated.' }
         format.json { render :show, status: :ok, location: @product }
+
+        @products = Product.all.order(:title) 
+        ActionCable.server.broadcast 'products',
+        html: render_to_string('store/index', layout: false)
       else
         format.html { render :edit }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.json { render json: @product.errors,
+        status: :unprocessable_entity } 
       end
-    end
+    end 
   end
 
   # DELETE /products/1

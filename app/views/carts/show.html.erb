@@ -13,6 +13,7 @@
         <td class="price"><%= number_to_currency(line_item.total_price) %></td>
       </tr>
     <% end %>
+    <%= render_if @cart && @cart.line_items.any?, @cart %>
     <tfoot>
       <tr>
         <th colspan="2">Total:</th>
