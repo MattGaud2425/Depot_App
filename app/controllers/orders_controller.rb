@@ -34,7 +34,8 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.save
         Cart.destroy(session[:cart_id])
-        format.html { redirect_to @order, notice: 'Order was successfully created.' }
+        session[:cart_id] = nil
+        format.html { redirect_to store_index_url, notice: 'Thank you for order. ' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new }
@@ -65,6 +66,15 @@ class OrdersController < ApplicationController
       format.html { redirect_to orders_url, notice: 'Order was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def pay_type_params
+    if order_params[:pay_type] == "Credit card"
+    params.require(:order).permit(:credit_card_number, :expiration_date) elsif order_params[:pay_type] == "Check"
+    params.require(:order).permit(:routing_number, :account_number) elsif order_params[:pay_type] == "Purchase order"
+    params.require(:order).permit(:po_number) else
+    {}
+    end 
   end
 
   private
