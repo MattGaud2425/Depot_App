@@ -2,6 +2,19 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.action_cable.disable_request_forgery_protection = true
+  config.action_mailer.delivery_method = :test
+
+  # config.action_mailer.smtp_settings = {
+  #   address: 
+  #   port:
+  #   domain:
+  #   authentication: "plain", 
+  #   user_name: "dave", 
+  #   password: "secret", 
+  #   enable_starttls_auto: true
+  #   "smtp.gmail.com",
+  #   587, "domain.of.sender.net",
+  #   }
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
